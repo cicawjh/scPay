@@ -1,0 +1,28 @@
+.caption{
+	margin-top: 5px;color:#CC0000;
+}
+.prompt{
+	 margin-top:20px;
+}
+
+.tableshow dl{
+	clear:both;
+}
+
+.tableshow dl:after {content:".";display:block;height:0;clear:both;visibility:hidden;}
+
+.tableshow dl {display:inline-block;}
+
+/* Hide from IE Mac \*/
+
+.tableshow dl {display:block;}
+
+.tableshow dl dt,.tableshow dl dd{
+	float:left;
+	margin:0px;
+	padding:0px;
+}
+
+.tableshow dl dt{
+	width:120px;
+}

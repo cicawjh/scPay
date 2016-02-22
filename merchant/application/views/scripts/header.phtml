@@ -1,0 +1,18 @@
+<?php 
+	$request = Zend_Controller_Front::getInstance()->getRequest(); 
+	$base_url = $request->getBaseUrl();
+	$base_url .= '/public';
+?>
+<div class="top">
+	<div class="logo"><a href="<?php echo $this->url(array('controller'=>'index'), 'default', true);?>">Secure Shopping Network</a></div>
+</div>
+
+<div class="direction">
+	<ul>
+		<li><a href="<?php echo $this->url(array('controller'=>'index'), 'default', true);?>">Home</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Merchantoverview'), 'default', true);?>">Merchant</a></li>
+		<li><a href="#">Resource</a></li>
+		<li><a href="#">About Us</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Report'), 'default', true);?>">Report</a></li>
+	</ul>
+</div>

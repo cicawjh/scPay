@@ -1,0 +1,55 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest(); 
+$base_url = $request->getBaseUrl();
+$base_url .= '/public';
+$this->headScript()->appendFile($base_url.'/JS/jquery.jqplot.0.9.7/plugins/jqplot.dateAxisRenderer.min.js');
+
+?>
+<div class="jqPlot" id="chart2" style="height:320px; width:540px;"></div>
+<?php
+	if($this->Data){
+?>
+<script type="text/javascript" language="javascript">
+<?php
+		$series='series:[';$setticks=false;
+		foreach($this->Data as $key=>$lineData){
+			$jsstr.='var '.$key.'=[';
+			if(!$setticks){$ticks='[';}
+			foreach($lineData['data'] as $key1=>$value){
+				$jsstr.="['".$key1."',".($value['trans_amount']?$value['trans_amount']:0)."],";
+				if(!$setticks){$ticks.=$key1.',';}
+			}
+			if(substr($jsstr,-1)==','){$jsstr=substr($jsstr,0,-1);}
+			$jsstr.='];'."\r\n";
+			if(!$setticks){$ticks=substr($ticks,0,-1).']';}
+			$setticks=true;
+			$lines.=','.$key;
+			$series.="{label: '".$lineData['label']."'}".',';
+		}
+		$series=substr($series,0,-1).']';
+		
+		
+		echo $jsstr;
+		$lines=substr($lines,1);
+?>
+plot10 = $.jqplot('chart2', [<?php echo $lines; ?>], {
+    stackSeries: true, 
+    legend: {show: true, location: 'nw'},
+    title:'Transaction daily summary', 
+    gridPadding:{right:35},
+<?php echo $series; ?>,
+    axes:{
+        xaxis:{
+            renderer:$.jqplot.DateAxisRenderer, 
+            tickOptions:{formatString:'%b %#d, %Y'}
+        }
+    },
+	series:[
+        {showLabel:true},
+        {showLabel:true}
+      ]
+});
+</script>
+<?php
+}
+?>

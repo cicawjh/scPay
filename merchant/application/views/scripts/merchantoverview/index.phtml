@@ -1,0 +1,60 @@
+<div style="margin-top: 5px;color:#CC0000;">My Account Overview</div>
+<div style="margin-top:20px;">Weclome, <b><?php echo $this->merchant_info['merchant_name'];?></b> (<?php echo $this->merchant_info['merchant_email'];?>)</div>
+<div style="margin-top:5px;">Account Number: <?php echo $this->merchant_info['merchant_number'];?></div>
+<div style="margin-top:5px;">Account Status: <?php echo $this->merchant_info['mstatus_name'];?></div>			
+<div style="margin-top:5px;">Open Date: <?php echo $this->merchant_info['open_date'];?></div>	
+<?php
+	$balance = $this->merchant_info['amount_balance'];
+	$reserve = $this->merchant_info['amount_locked'] + $this->merchant_info['amount_reserve'];
+	if ($balance - $reserve > 0) {
+	   $withdraw = $balance - $reserve;
+	} else {
+	   $withdraw = 0;
+	}
+?>
+<div style="margin-top:8px;"><b>Balance:</b> <?php echo $this->merchant_info['symbol'].$balance;?>  <b>Reserve:</b> <?php echo $this->merchant_info['symbol'].$this->merchant_info['amount_reserve'];?>  <b>Locked:</b> <?php echo $this->merchant_info['symbol'].$this->merchant_info['amount_locked'];?> <b>Can Withdraw:</b> <?php echo $this->merchant_info['symbol'].$withdraw;?> </div>
+<div style="margin-top:20px;">Account History:  <a href="<?php echo $this->url(array('controller'=>'Alltransaction'), 'default', true);?>">All account activity</a> | <a href="<?php echo $this->url(array('controller'=>'Transaction'), 'default', true);?>">Transaction</a> | <a href="<?php echo $this->url(array('controller'=>'Withdrawtrans'), 'default', true);?>">Withdraw</a></div>
+
+<div style="margin-top:20px;">Recent Activity <font style="color:#666;font-size:10px;"><small>Last 7 days (<?php echo $this->merchant_trans[0]['begin'].' - '.$this->merchant_trans[0]['end']?>)</small></font></div>
+<div class="tableout">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#ffffff>
+			<th>TransID</th>
+			<th>Inv#</th>
+			<th>Type</th>
+			<th>Status</th>
+			<th>Time</th>
+			<th>Customer</th>
+			<th>CC#</th>	
+			<th>Amount</th>
+			<th>Fee</th>
+			<th>Net</th>
+		</tr>
+	<?php if (sizeof($this->merchant_trans[1])) {
+		$i = 0;
+		$start_row = (($this->page-1) * $this->numPerPage) + 1;
+		$end_row = $this->page * $this->numPerPage;
+		foreach ($this->merchant_trans[1] as $key => $val): 
+			$i++;
+			
+			if ($i >=$start_row && $i <= $end_row) {
+	?>
+		<tr bgcolor=#ffffff>
+		   <td align=center><a href="<?php echo $this->url(array('controller'=>'Transinfo','action'=>'index','id'=>$this->escape($val['ptransid'])), 'default', true);?>" style="text-decoration: underline;"><?php echo $this->escape($val['ptransid']); ?></a></td>
+		    <td><?php echo $this->escape($val['trans_invoice']); ?></td>
+		    <td><?php echo $this->escape($val['transtype_name']); ?></td>
+		    <td><?php echo $this->escape($val['transtatus_name']),$val['locked']?' <font color="red" title="Locked">(L)</font>':''; ?></td>
+		    <td width=70px;><?php echo $this->escape($val['trans_date']); ?></td>
+		    <td><?php echo $this->escape($val['trans_ccowner']); ?></td>
+		    <td><?php echo $this->escape('XXXX'.substr($val['trans_ccnum'],-4,4)); ?></td>   
+		    <td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_amount']); ?></td>
+		    <td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_fee']); ?></td>
+		    <td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_net']); ?></td>
+		</tr>
+		
+	<?php		}
+		endforeach; 
+	      }?>
+	</table>
+</div>
+<div style="margin-top:5px;text-align:right;"><?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagelist.phtml'); ?></div>

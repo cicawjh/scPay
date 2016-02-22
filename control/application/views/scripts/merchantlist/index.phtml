@@ -1,0 +1,54 @@
+<div class="cfix tloc"><div class="plocation"><div class="location">Merchant List</div></div></div>
+
+<div style="margin-top:20px;" class="toolbar"><form method="post" action="<?php echo $this->url(array('controller'=>'Merchantlist','action'=>'Search'), 'default', true);?>">
+	Name:<?php echo $this->formText('m_name', $this->m_name, array('size' => 16,'style'=>'font-size:11px;')); ?>
+	NO.:<?php echo $this->formText('m_number', $this->m_number, array('size' => 16,'style'=>'font-size:11px;')); ?>
+	Email:<?php echo $this->formText('m_email', $this->m_email, array('size' => 16,'style'=>'font-size:11px;')); ?>
+	Status:<?php echo $this->formSelect('m_status', $this->m_status, array('style'=>'font-size:11px;') , array(0=>'Please Select',1=>'Sandbox',2=>'Enable',3=>'Suspend',4=>'Close')); ?>
+	<?php echo $this->formSubmit('submit','Search',array('style'=>'font-size:11px;')); ?></form>
+</div>
+<div class="tableout">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#FFFFFF align=center>
+			<th>ID</th>
+			<th>Merchant Name</th>
+			<th>Merchant No.</th>
+			<th>Email</th>
+			<th>Month Payment</th>
+			<th>Balance</th>
+			<th>Locked</th>
+			<th>Reserve</th>
+			<th>Status</th>
+			<th colspan=3>Action</th>
+		</tr>
+		<?php if (sizeof($this->merchantsList)) {
+		$i = 0;
+		$start_row = (($this->page-1) * $this->numPerPage) + 1;
+		$end_row = $this->page * $this->numPerPage;
+		foreach ($this->merchantsList as $key => $val): 
+			$i++;
+			
+			if ($i >=$start_row && $i <= $end_row) {
+	?>
+		<tr bgcolor=#ffffff>
+		    <td><?php echo $this->escape($val['mid']); ?></td>
+		    <td><?php echo $this->escape($val['merchant_name']); ?></td>
+		    <td><?php echo $this->escape($val['merchant_number']); ?></td>
+		    <td><?php echo $this->escape($val['merchant_email']); ?></td>
+		    <td><?php echo $this->escape($val['last_charge']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['amount_balance']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['amount_locked']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['amount_reserve']?$val['amount_reserve']:'0'); ?></td>
+		    <td><?php echo $this->escape($val['mstatus_name']); ?></td>
+		    <td><a href="<?php echo $this->url(array('controller'=>'Merchantinfo','action'=>'Edit','id'=> $this->escape($val['mid'])), 'default', true); ?>">Edit</a></td>
+		    <td><a href="<?php echo $this->url(array('controller'=>'Merchantinfo','action'=>'Set','id'=> $this->escape($val['mid'])), 'default', true); ?>">Set</a></td>
+		    <td><a href="<?php echo $this->url(array('controller'=>'Merchanttrans','action'=>'Index','id'=> $this->escape($val['mid'])), 'default', true); ?>">History</a></td>
+		</tr>
+		
+	<?php		}
+		endforeach; 
+	      }?>
+	</table>
+</div>
+<div style="float:left;margin-top:10px;"><a href="<?php echo $this->url(array('controller'=>'Merchantinfo','action'=>'Add'), 'default', true); ?>" style="color:#CC0000;">Add New Merchant</a></div>
+<div style="margin-top:5px;float:right;"><?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagelist.phtml'); ?></div>

@@ -1,0 +1,360 @@
+body {
+	/*background-color: #F0F0F0;*/
+	background-color:#1E1E1E;
+	font-family: Verdana,Arial;
+	font-size: 11px;
+	text-align: center;
+	margin:10px 0px;
+	padding:0px;
+}
+
+body,form,dl,dd,dt,ul{
+	margin:0px;
+	padding:0px;
+}
+
+ul{
+	list-style:none;
+}
+
+a{ 
+  color:#000; 
+  text-decoration: none; 
+}
+
+a:hover { 
+  color:#000; 
+  text-decoration: underline; 
+}
+
+.cfix:after {content:".";display:block;height:0;clear:both;visibility:hidden;}
+
+.cfix {display:inline-block;}
+
+.mt0{
+	margin-top:10px;
+}
+
+/* Hide from IE Mac */
+
+.cfix {display:block;}
+
+.input-text{border:1px solid #7F9DB9;height:16px;line-height:16px;}
+
+/*top style*/
+.top{
+	background:url("../images/topbg.gif") left top repeat-x;
+	padding-top:7px;
+	height:85px;
+}
+
+.top .logo{
+	float:left;
+	width:340px;
+	height:85px;
+	background:url("../images/logo.png") center center no-repeat;
+	overflow:hidden;
+}
+.top .logo a{
+	display:block;
+	width:340px;
+	height:70px;
+	text-indent:-680px;
+}
+
+.top .login_box{
+	float:right;
+	overflow:hidden;
+	padding-right:6px;
+	padding-top:6px;
+}
+
+.top .login_box #login_form{
+	margin-top:40px;
+	margin-right:6px;
+}
+
+.top .loginid{
+	width:80px;
+}
+
+.top .loginpass{
+	width:80px;
+}
+
+.top .btnbg{
+	border:1px solid #003C74;
+	font-size:11px;
+	height:20px;
+	background:url("../images/btnbg.gif") left top repeat-x;
+}
+
+.direction{
+	background:#EBEBEB;
+	border:1px solid #E1E1E1;
+	border-left:none;
+	border-right:none;
+	line-height:26px;
+	height:26px;
+	overflow:hidden;
+}
+
+.direction ul li{
+	float:left;
+	background:url("../images/direction-lin.gif") left center no-repeat;
+	margin-left:-1px;
+	padding:0px 20px;
+}
+
+.direction ul li a,.direction ul li a *{
+	font-weight:bold;
+	color:#0F559B;
+}
+
+.direction ul li a:hover{
+	color:#006600;
+	text-decoration:none;
+}
+
+/*bottom style*/
+.mbd-b{
+	height:13px;
+	background:#FFFFFF;
+	margin:0px;
+}
+
+.mbd-b .mbd-bl{
+	background:url("../images/bangle_l.gif");
+	width:14px;
+	height:13px;
+	overflow:hidden;
+	float:left;
+}
+
+.mbd-b .mbd-br{
+	background:url("../images/bangle_r.gif");
+	width:14px;
+	height:13px;
+	overflow:hidden;
+	float:right;
+}
+
+.tloc{
+	
+}
+
+.plocation{
+	background:url("../images/location-b.gif") right center repeat-x;
+	float:left;
+}
+
+.location{
+	background:url("../images/location.gif") right center no-repeat;
+	height:26px;
+	float:left;
+	line-height:26px;
+	padding:0px 10px 0px 10px;
+	color:#CC0000;
+}
+
+.content {
+	background: #FFFFFF;
+	width: 900px;
+	margin: 0px auto;
+}
+
+.content .tableout{
+	margin-top:8px;background-color:#000;border:1px solid #E1E1E1;
+}
+
+.content .table{
+	font-size:9px;
+	background:#CCCCCC;
+}
+
+.content .table th{
+	padding:4px 0px;
+	background-color:#FFFCF7;
+}
+
+.content .table tr{
+	background-color:#FFFFFF;
+}
+
+.content .table tr:hover,.content .table .trhover{
+	background-color:#F5F9FA;
+}
+
+.content .toolbar{
+	margin:6px 0px;background-color:#EAEAEA;border:1px solid #DADADA;padding:4px 2px;
+}
+
+.header {
+	height: 100px;
+	position: relative;
+}
+
+#logo {
+	position: absolute;
+	top: 15px;
+	left: 10px;
+}
+
+#top_button {
+	position: absolute;
+	top: 80px;
+	left: 20px;
+	background-color: #686868;
+	width: 860px;
+	height: 20px;
+}
+
+#top_button_2 {
+	position: absolute;
+	top: 5px;
+	right: 20px;
+	/*width: 180px;*/
+	height:20px;
+}
+
+
+#top_button_font {
+	color: #FFF;
+	font-size:11px;
+	font-weight:normal;
+	line-height: 20px;
+	text-align:left;
+}
+
+#top_button_font a {
+	color: #FFF;
+	text-decoration: none; 
+}
+
+.left {
+	float: left;
+	width: 620px;
+	margin-left: 10px;
+	margin-top: 5px;
+	min-height: 380px;
+	text-align: left;
+}
+
+.right {
+	float: left;
+	width: 190px;
+	height: 500px;
+	margin-left:5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding:10px;
+	border-left: 1px solid #CFCFCF;
+	text-align: left;
+}
+
+#login_form {
+	margin-top:10px;
+	height: 200px;
+	padding: 5px;
+	line-height: 20px;
+}
+
+
+.footer {
+	clear:both;
+	margin: 0px auto;
+	line-height: 40px;
+	height: 40px;
+	font-size: 10px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	width: 900px;
+	color:#FF6600;
+}
+
+
+#register dl {
+  width:420px;
+}
+
+#register dt {
+  width: 130px;
+  float: left;
+  padding:4px;
+  padding-top:8px; 
+  text-align:right;
+}
+
+#register dd{
+  margin:0 0 0 118px;
+  padding:4px;
+  text-align:left;
+}
+
+
+#register input {
+  font: 1em Verdana;
+  width: 200px;
+ }
+
+#register .button {
+  width: auto;
+}
+
+.required {
+  font:1em Verdana;
+  /*color:#f68622;*/
+}
+
+div.paginationControl {
+        padding: 2px 3px; 
+		font-size: 0.9em;
+		color: #ff6500;
+		text-align: left;
+		margin:10px 0px;
+}
+div.paginationControl a {
+        border: #ff9600 1px solid; 
+		padding: 4px 3px; 
+		margin: 3px;
+		text-decoration: none
+}
+div.paginationControl a:hover {
+        border: #ff9600 1px solid; 
+		color: #ff6500; 
+		background-color: #ffc794
+}
+div.paginationControl a:active {
+        border: #ff9600 1px solid;
+		color: #ff6500;
+		background-color: #ffc794
+}
+div.paginationControl span.current {
+        border: #ff6500 1px solid; 
+		padding: 7px; 
+		margin: 3px; 
+		background-color: #ffbe94
+}
+div.paginationControl span.disabled {
+        border: #ffe3c6 1px solid; 
+		padding: 5px; 
+		color: #ffe3c6; 
+		margin: 3px;
+}
+
+#deliveryform{
+	margin-top:20px;
+}
+#deliveryform dl{
+	clear:both;
+}
+#deliveryform dl dt,#deliveryform dl dd{
+	float:left;
+	margin:4px 0px;
+}
+#deliveryform dl dt{
+	width:120px;
+}
+
+form dl{
+	margin:3px 0px;
+}

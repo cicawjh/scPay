@@ -1,0 +1,53 @@
+<div style="margin:10px 0px;"><a href="<?php echo $this->url(array('controller'=>'Report','action'=>'index'), 'default', true);?>">Statistics Sum</a> | <a href="<?php echo $this->url(array('controller'=>'Report','action'=>'chartreport'), 'default', true);?>">Statistics Chart</a></div>
+
+<form action="" method="post" style="margin:0px;" id="conditionform"><div style="margin:6px 0px;background-color:#EAEAEA;border:1px solid #DADADA;padding:4px 2px;"><strong>Statistics Condition:</strong> Begin Date:
+ <input type="text" name="begin_date" id="begin_date" value="<?php echo $this->params['begin_date']; ?>" size="12" /> 
+End Date :
+<input type="text" name="end_date" id="end_date" size="12" value="<?php echo $this->params['end_date']; ?>" /> 
+Merchant Name Or ID:
+<input type="text" name="merchants" id="merchants" size="25" value="<?php echo $this->params['merchants']; ?>" /> </div>
+
+<div style="margin:6px 0px;background-color:#EAEAEA;border:1px solid #DADADA;padding:4px 2px;"><span style="float:right"><input type="submit" name="button" id="Gernerate" value="Gernerate Report" /></span>
+<strong>Statistics Line:</strong><input type="checkbox" name="showline[]" id="showline" value="Received" /> Received
+<input type="checkbox" name="showline[]" id="showline" value="Refund" /> Refund
+<input type="checkbox" name="showline[]" id="showline" value="Net Fee" /> Net Fee 
+</div></form>
+
+<div id="MyCanvas"></div>
+
+<div style="padding:10px 0px;"><div id="Chart" style="height:400px;"></div>
+</div>
+
+<?php
+		$request = Zend_Controller_Front::getInstance()->getRequest(); 
+		$base_url = $request->getBaseUrl();
+		$base_url .= '/public';
+?>
+
+<script type="text/javascript">
+	$(window).ready(function(){
+   
+		$('#begin_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+		$('#end_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+		
+		var chart = new FusionCharts("<?php echo $base_url; ?>/js/FusionCharts/Charts/MSLine.swf", "ChartId", "820", "400", "0", "0");
+
+   		chart.setDataURL("<?php echo $this->url(array('controller'=>'Report','action'=>'chartreportxmldata'),'default',true); ?>");	
+		chart.render("Chart");
+		
+		$("#Gernerate").click(function(){
+			$.ajax({
+				type:"POST",
+				url:"<?php echo $this->url(array('controller'=>'Report','action'=>'chartreportxmldata'),'default',true); ?>",
+				data:$("#conditionform").serialize(),
+				success:function(msg){
+					var chart = new FusionCharts("<?php echo $base_url; ?>/js/FusionCharts/Charts/MSLine.swf", "ChartId", "820", "400", "0", "0");
+			
+					chart.setDataXML(msg);	
+					chart.render("Chart");	
+				}
+			});
+			return false;
+		});
+	});
+</script>

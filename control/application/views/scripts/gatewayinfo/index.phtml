@@ -1,0 +1,7 @@
+<?php 
+	$request = Zend_Controller_Front::getInstance()->getRequest();
+	$action = $request->getActionName();
+?>
+<div style="margin-top: 5px;color:#CC0000;"><?php echo ($action=="Add")?'Add Gateway':'Edit Gateway'; ?></div>
+<div style="float:left;"><?php echo $this->info_form;?></div>
+<div style="clear:both;"></div>

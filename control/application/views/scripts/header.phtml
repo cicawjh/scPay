@@ -1,0 +1,25 @@
+<?php 
+	$request = Zend_Controller_Front::getInstance()->getRequest(); 
+	$base_url = $request->getBaseUrl();
+	$base_url .= '/public';
+?>
+<div class="top">
+	<div class="logo"><a href="<?php echo $this->url(array('controller'=>'index'), 'default', true);?>">Secure Shopping Network</a></div>
+	<div class="login_box">
+		<form id="login_form" name="login_form" action="<?php echo $this->url(array('controller'=>'login','action'=>'login'), 'default', true); ?>" method="POST">
+			User ID: <?php echo $this->formText('login_id', '', array('size' => 16,'class'=>'input-text loginid')); ?>&nbsp;Password: <?php echo $this->formPassword('login_pass', '', array('size' => 18,'class'=>'input-text loginpass')); ?>&nbsp;<?php echo $this->formHidden('action','login');?><?php echo $this->formSubmit('submit','Submit',array('class'=>'btnbg')); ?>
+		</form>
+	</div>
+</div>
+
+<div class="direction">
+	<ul>
+		<li><a href="<?php echo $this->url(array('controller'=>'index'), 'default', true);?>">Home</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Merchantlist'), 'default', true);?>">Merchant List</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Withdrawtrans'), 'default', true);?>">Apply Withdraw</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Monthpayment'), 'default', true);?>">Collect Fees</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Chargeback'), 'default', true);?>">Charge Back</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Report'), 'default', true);?>">Reports</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Systemset'), 'default', true);?>">System Setting</a></li>
+	</ul>
+</div>

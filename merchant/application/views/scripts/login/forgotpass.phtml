@@ -1,0 +1,21 @@
+<p>Please input your registered merchant name and merchant email for request a new password,we will send new password to email address when your fill correct.</p>
+<form action="<?php echo $this->url(array('controller'=>'login','action'=>'forgotpass','ajax'=>'1'),'default',true); ?>" name="gotpassform" method="POST">
+<dl><dt>Merchant Name:</dt><dd><input type="text" size="20" name="merchantName" /></dd></dl>
+<dl><dt>Merchant Email:</dt><dd><input type="text" size="20" name="merchantEmail" /></dd></dl>
+<dl><dt></dt><dd><input type="submit" name="button" id="button" value="Send New Password" /></dd></dl>
+</form>
+<div id="feedbakinfo"></div>
+<script type="text/javascript">
+	$("form[name='gotpassform']").submit(function(){
+		$("#feedbakinfo").html('Submitting....');
+		$.ajax({
+			type:'POST',
+			url:$(this).attr('action'),
+			data:$(this).serialize(),
+			success:function(msg){
+				$("#feedbakinfo").html(msg);
+			}
+		});
+		return false;
+	});
+</script>

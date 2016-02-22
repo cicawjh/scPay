@@ -1,0 +1,72 @@
+<div class="cfix tloc"><div class="plocation"><div class="location">Merchant History</div></div></div>
+
+<div style="margin-top:20px;">Merchant Name: <b><?php echo $this->merchant_info['merchant_name']; ?></b></div>
+<div style="margin-top:5px;clear:both;">Merchant Number: <?php echo $this->merchant_info['merchant_number']; ?></div>
+<div style="margin-top:5px;">Account Status: <?php echo $this->merchant_info['mstatus_name'];?></div>			
+<div style="margin-top:5px;">Open Date: <?php echo $this->merchant_info['open_date'];?></div>
+<?php 
+	$balance = $this->merchant_info['amount_balance'];
+	$reserve = $this->merchant_info['amount_locked'] + $this->merchant_info['amount_reserve'];
+	if ($balance - $reserve >0) {
+	   $withdraw = $balance - $reserve;
+	} else {
+	   $withdraw = 0;
+	}
+?>
+<div style="margin-top:8px;"><b>Balance:</b> <?php echo $this->merchant_info['symbol'].$balance;?>  <b>Reserve:</b> <?php echo $this->merchant_info['symbol'].$this->merchant_info['amount_reserve'];?> 
+  <b>Locked:</b> <?php echo $this->merchant_info['symbol'].$this->merchant_info['amount_locked'];?> <b>Can Withdraw:</b> <?php echo $this->merchant_info['symbol'].$withdraw;?></div>
+<div class="toolbar"><form id="SearchForm" name="SearchForm" method="post" action="<?php echo $this->url(array('controller'=>'Merchanttrans','action'=>'Index','id'=>$this->merchant_info['mid']), 'default', true);?>">
+<b>From:</b><?php echo $this->formText('begin', $this->begin, array('size' => 10,'style'=>'font-size:11px;')); ?> <b>To:</b><?php echo $this->formText('to', $this->to, array('size' => 10,'style'=>'font-size:11px;')); ?> <b>Inv#:</b><?php echo $this->formText('inv_no', $this->inv_no, array('size' => 8,'style'=>'font-size:11px;')); ?> <b>Customer:</b><?php echo $this->formText('customer', $this->customer, array('size' => 12,'style'=>'font-size:11px;')); ?> <b>Ag#:</b><?php echo $this->formText('agtransid', $this->agtransid, array('size' => 10,'style'=>'font-size:11px;')); ?> <b>CC#:</b><?php echo $this->formText('ccno', $this->ccno, array('size' => 4,'style'=>'font-size:11px;')); ?> <?php echo $this->formSubmit('submit','Search',array('style'=>'font-size:11px;')); ?><?php echo $this->formButton('button','Return',array('style'=>'font-size:11px;','onclick'=>"location.href='". $this->url(array('controller'=>'Merchantlist'), 'default', true)."';")); ?>
+</form></div>
+<div style="clear:both;"></div>
+<div class="tableout">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr>
+			<th>TransID</th>
+			<th>AG#</th>
+			<th>Inv#</th>
+			<th>Type</th>
+			<th>Status</th>
+			<th>Time</th>
+			<th>Customer</th>
+			<th>CC#</th>	
+			<th>Amount</th>
+			<th>Fee</th>
+			<th>Net</th>
+		</tr>
+	<?php if (sizeof($this->transaction)) {
+		$i = 0;
+		$start_row = (($this->page-1) * $this->numPerPage) + 1;
+		$end_row = $this->page * $this->numPerPage;
+		foreach ($this->transaction as $key => $val): 
+			$i++;
+			
+			if ($i >=$start_row && $i <= $end_row) {
+	?>
+		<tr>
+		    <td align=center><a href="<?php echo $this->url(array('controller'=>'Transinfo','action'=>'index','mid'=>$this->escape($val['mid']),'id'=>$this->escape($val['ptransid'])), 'default', true);?>" style="text-decoration: underline;"><?php echo $this->escape($val['ptransid']); ?></a></td>
+		    <td width=100><?php echo (strlen($val['agtransid']) > 14)?$this->escape(substr($val['agtransid'],0,13).'X'):$this->escape($val['agtransid']); ?></td>
+		    <td><?php echo $this->escape($val['trans_invoice']); ?></td>
+		    <td><?php echo $this->escape($val['transtype_name']); ?></td>
+		    <td><?php echo $this->escape($val['transtatus_name']),$val['locked']?'(<font color="red">Locked</font>)':''; ?></td>
+		    <td width=70px;><?php echo $this->escape($val['trans_date']); ?></td>
+		    <td><?php echo $this->escape($val['trans_ccowner']); ?></td>
+		    <td><?php echo $this->escape('XXXX'.substr($val['trans_ccnum'],-4,4)); ?></td>   
+		    <td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_amount']); ?></td>
+		    <td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_fee']); ?></td>
+		    <td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_net']); ?></td>
+		</tr>
+		
+	<?php		}
+		endforeach; 
+	      }?>
+	</table>
+</div>
+<div style="margin-top:5px;text-align:right;"><?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagelist.phtml'); ?></div>
+
+<script type="text/javascript">
+ $(document).ready(function(){
+	$('#begin').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+	$('#to').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+});
+</script>

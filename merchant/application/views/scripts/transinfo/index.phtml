@@ -1,0 +1,136 @@
+<div style="margin-top: 5px;color:#CC0000;">Transaction Detail</div>
+<div style="margin-top:20px;">Transaction ID: <b><?php echo $this->transaction['ptransid'];?></b></div>
+<div style="margin-top:5px;">Transaction Type: <?php echo $this->transaction['transtype_name'];?></div>
+<div style="margin-top:5px;">Transaction Status: <?php echo $this->transaction['transtatus_name'],$this->transaction['locked']?' (<font color="red">Locked</font>)':'';?></div>
+<?php 
+//if(!$this->transaction['locked']){
+if ($this->transaction['transtypeid'] == 1 && $this->transaction['transtatusid'] == 2) { 
+?>
+<div style="margin-top:5px;">
+	<form name="refundForm" id="refundForm" method="POST" action="<?php echo $this->url(array('controller'=>'Refundtrans'), 'default', true); ?>">
+	<input type="hidden" id="transID" name="transID" value="<?php echo $this->transaction['ptransid'];?>">
+	<input type="submit" value="Refund">
+	</form>
+</div>
+<?php } ?>
+<?php if ($this->transaction['transtypeid'] == 1 && $this->transaction['transtatusid'] == 1) { ?>
+<div style="margin-top:5px;">
+	<form name="receiveForm" id="receiveForm" method="POST" action="<?php echo $this->url(array('controller'=>'Transinfo','action'=>'receive'), 'default', true); ?>">
+	<input type="hidden" id="transID" name="transID" value="<?php echo $this->transaction['ptransid'];?>">
+	<input type="submit" value="Receive Money">
+	</form>
+	<form name="rejectForm" id="rejectForm" method="POST" action="<?php echo $this->url(array('controller'=>'Transinfo','action'=>'reject'), 'default', true); ?>">
+	<input type="hidden" id="transID" name="transID" value="<?php echo $this->transaction['ptransid'];?>">
+	<input type="submit" value="Reject It">
+	</form>
+</div>
+<?php }
+//}
+ ?>
+<div id="prompt"></div>
+<div style="background-color:#E3E3E3;margin-top:5px;height:20px;line-height:20px;padding:5px;font-size:12px;">Settlement Information</div>
+<div style="margin-top:5px;padding-left:20px;">Settlement Amount#: <?php echo $this->symbol.$this->transaction['trans_amount'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Settlement Date: <?php echo $this->symbol.$this->transaction['trans_date'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Settlement Desc: <?php echo $this->transaction['trans_desc'];?></div>
+<?php if ($this->transaction['agtransid'] != '') {?>
+<div style="background-color:#E3E3E3;margin-top:5px;height:20px;line-height:20px;padding:5px;font-size:12px;">Payment Information</div>
+<div style="margin-top:5px;padding-left:20px;">Invoice#: <?php echo $this->transaction['trans_invoice'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Products Info: <?php echo $this->transaction['ag_desc'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Total Amount#: <?php echo $this->symbol.$this->transaction['ag_amount'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Card Number: <?php if (strlen($this->transaction['trans_ccnum']) > 8) { echo $this->escape(substr($this->transaction['trans_ccnum'],0,8) . str_repeat('X',strlen($this->transaction['trans_ccnum']) - 12).substr($this->transaction['trans_ccnum'],-4));} else { echo $this->transaction['trans_ccnum'];}?></div>
+<div style="margin-top:5px;padding-left:20px;">CVV2: <?php echo $this->escape($this->transaction['trans_cvv2']);?></div>
+<div style="margin-top:5px;padding-left:20px;">Expire Date: <?php echo $this->escape($this->transaction['trans_expire']);?></div>
+<div style="margin-top:5px;padding-left:20px;">Trans Date: <?php echo $this->transaction['ag_date'];?></div>
+
+<div style="background-color:#E3E3E3;margin-top:5px;height:20px;line-height:20px;padding:5px;font-size:12px;">Billing Information</div>
+<div style="margin-top:5px;padding-left:20px;">Customer Name: <?php echo $this->transaction['trans_ccowner'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Email: <?php echo $this->transaction['customer_email'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Address: <?php echo $this->transaction['customer_street'];?></div>
+<div style="margin-top:5px;padding-left:20px;">City: <?php echo $this->transaction['customer_city'];?></div>
+<div style="margin-top:5px;padding-left:20px;">State: <?php echo $this->transaction['customer_state'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Country: <?php echo $this->transaction['customer_country'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Post Code: <?php echo $this->transaction['shipping_postcode'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Telephone: <?php echo $this->transaction['customer_telephone'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Ip Address: <?php echo $this->transaction['customer_ip'];?>
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest(); 
+$base_url = $request->getBaseUrl();
+$base_url .= '/public';
+	
+$ipinfo=new ipvalidationdb($this->transaction['customer_ip']);
+if($ipinfo->locId){
+	echo '(',$ipinfo->city,',',$ipinfo->region_name,' ',$ipinfo->country_name,')';
+	if(stripos($this->transaction['customer_city'],$ipinfo->city)===false){
+		
+		echo ' <img src="'.$base_url.'/images/exclamation.png" align="absmiddle" width="16" height="16" border="0" />';
+	}
+}else{
+	echo ' <img src="'.$base_url.'/images/exclamation.png" align="absmiddle" width="16" height="16" border="0" />';
+}
+?></div>
+
+
+<div style="background-color:#E3E3E3;margin-top:5px;height:20px;line-height:20px;padding:5px;font-size:12px;">Shipping Information</div>
+<div style="margin-top:5px;padding-left:20px;">Name: <?php echo $this->transaction['shipping_name'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Address: <?php echo $this->transaction['shipping_street'];?></div>
+<div style="margin-top:5px;padding-left:20px;">City: <?php echo $this->transaction['shipping_city'];?></div>
+<div style="margin-top:5px;padding-left:20px;">State: <?php echo $this->transaction['shipping_state'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Country: <?php echo $this->transaction['shipping_country'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Post Code: <?php echo $this->transaction['shipping_zip'];?></div>
+<?php }?>
+
+<form id="deliveryform"><fieldset><legend>Add Tracking Info</legend>
+<dl><dt>Shipping Company:</dt><dd><select name="forwarder">
+<?php
+	if($this->shippingmethods){
+		foreach($this->shippingmethods as $mtext){
+			if($this->transaction['forwarder']==$mtext['name']){$s=' selected="selected"';}else{$s='';}
+		?><option value="<?php echo $mtext['name']; ?>"<?php echo $s; ?>><?php echo $mtext['name']; ?></option><?php
+		}
+	}
+?>
+</select></dd></dl>
+<dl><dt>Tracking Number:</dt><dd><input type="text" name="shippingNumer" size="30" value="<?php echo $this->transaction['forwarderno']; ?>" /></dd></dl>
+<dl><dt>Comment:</dt><dd><textarea name="detail" rows="3" cols="30"><?php echo $this->transaction['detail']; ?></textarea></dd></dl>
+<dl><dt></dt><dd><input type="Submit" value="Save" /><span id="promptshow"></span></dd></dl>
+</fieldset></form>
+
+<div style="margin-top:10px;padding-left:20px;margin-bottom:10px;">
+	<input type="button" value="Back to Transaction" onClick="location.href='<?php echo $this->url(array('controller'=>'Transaction'), 'default', true);?>';"><span id="morebtn">
+	<?php if(!$this->transaction['locked']){
+	 if ($this->transaction['transtypeid'] == 1 && $this->transaction['transtatusid'] == 2) { ?>
+		<input type="button" value="Refund" onClick="document.refundForm.submit();">
+	<?php } ?>
+	<?php if ($this->transaction['transtypeid'] == 1 && $this->transaction['transtatusid'] == 1) { ?>
+		<input type="button" value="Receive Money" onClick="document.receiveForm.submit();">
+		<input type="button" value="Reject It" onClick="document.rejectForm.submit();">
+	<?php }} ?></span>
+</div>
+
+<script type="text/javascript">
+ $('#deliveryform,#refundForm,#rejectForm,#deliveryform').submit(function(){
+	$('form,#morebtn').find('input[type="button"]').attr('disabled',true);
+	$('form,#morebtn').find('input[type="submit"]').attr('disabled',true);
+	$("#prompt").css('color','red').html('Please wait for submit your request.');
+ }); 
+ $(window).ready(function(){
+ 	$("#deliveryform").submit(function(){
+		$("#promptshow").html('Please wait submitting...');
+		$.ajax({
+			type:'POST',
+			url:'<?php echo $this->url(array('controller'=>'Transinfo','action'=>'delivery','id'=>$this->transaction['ptransid']), 'default', true); ?>',
+			data:$("#deliveryform").serialize(),
+			success:function(msg){
+				if(msg!='0'){
+					$("#promptshow").html('Delivery information saved successfully');
+				}else{
+					$("#promptshow").html("Don't change the delivery information");
+				}
+				$('form,#morebtn').find('input[type="button"]').attr('disabled',false);
+				$('form,#morebtn').find('input[type="submit"]').attr('disabled',false);
+			}
+		});
+		return false;
+	});
+ });
+</script>

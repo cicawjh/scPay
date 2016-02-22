@@ -1,0 +1,46 @@
+<?php 
+	$request = Zend_Controller_Front::getInstance()->getRequest(); 
+	$base_url = $request->getBaseUrl();
+	$base_url .= '/public';
+?>
+<div style="margin-top: 5px;color:#CC0000;">Set up merchant fee</div>
+<form id="setfeeForm" name="setfeeForm" method="post" action="<?php echo $this->url(array('controller'=>'Merchantinfo','action'=>'Savefee'), 'default', true); ?>">
+<input type="hidden" name="id" value="<?php echo $this->merchant_info['mid']; ?>">
+<div style="margin-top:5px;" >
+	<table border=0>
+		<tr><td>Transaction Fee: </td><td><?php echo $this->formText('x_trans', $this->merchant_info['trans_fee1'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?>% + $<?php echo $this->formText('x_fee', $this->merchant_info['trans_fee2'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?></td></tr>
+		<tr><td>Month Fee: </td><td>$<?php echo $this->formText('x_month', $this->merchant_info['month_fee'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?></td></tr>
+		<tr><td>Reserve: </td><td>$<?php echo $this->formText('x_reserve', $this->merchant_info['reserve_fee'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?>% keep <?php echo $this->formText('x_days', $this->merchant_info['reserve_day'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?> days,Withdraw keep <?php echo $this->formText('y_reserve_day', $this->merchant_info['y_reserve_day'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?> days</td></tr>
+		<tr><td>Setup Fee: </td><td>$<?php echo $this->formText('x_setup', $this->merchant_info['setup_fee'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?></td></tr>
+		<tr><td>Chargeback: </td><td>$<?php echo $this->formText('x_charge', $this->merchant_info['chargeback'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?></td></tr>
+		<tr><td>Withdraw Fee: </td><td>$<?php echo $this->formText('x_withdraw_fee', $this->merchant_info['withdraw'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?></td></tr>
+		<tr><td>Withdraw Limit: </td><td>$<?php echo $this->formText('x_withdraw_limit', $this->merchant_info['withdraw_limit'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?></td></tr>
+		<tr><td>Month limit: </td><td>$<?php echo $this->formText('x_monthlimit', $this->merchant_info['month_limit'], array('size' => 16,'style'=>'font-size:11px;width:40px;')); ?></td></tr>
+		<tr><td colspan=2><?php echo $this->formSubmit('submit','Save',array('style'=>'font-size:11px;')); ?><?php echo $this->formButton('button','Copy From Configuration',array('style'=>'font-size:11px;','onClick'=>"return copyFrom();")); ?><?php echo $this->formButton('button','Cancel',array('style'=>'font-size:11px;','onClick'=>"location.href='".$this->url(array('controller'=>'Merchantlist'), 'default', true)."';")); ?></td></tr>
+	</table>
+</form>
+</div>
+<div style="margin-top:25px;" ><a href="javascript:ConfirmReset();"><img src="<?php echo $base_url."/images/reset_reserve.gif"?>" border=0 alt=""></a></div>
+<script language="javascript">
+	function copyFrom() {
+		document.setfeeForm.x_trans.value= "4.2";
+		document.setfeeForm.x_fee.value= "0.35";
+		document.setfeeForm.x_month.value= "20";
+		document.setfeeForm.x_reserve.value= "10";
+		document.setfeeForm.x_days.value= "180";
+		document.setfeeForm.y_days.value= "4";
+		document.setfeeForm.x_setup.value= "400";
+		document.setfeeForm.x_charge.value= "30";
+		document.setfeeForm.x_withdraw_limit.value= "2000";
+		document.setfeeForm.x_withdraw_fee.value= "35";
+		document.setfeeForm.x_monthlimit.value= "5000";
+		return;
+	}
+
+	function ConfirmReset() {
+	   if(confirm("Are you sure to reset this customer's reserve data table ?")){
+		document.location.href="<?php echo $this->url(array('controller'=>'Merchantinfo','action'=>'Rebuild','id'=>$this->merchant_info['mid']), 'default', true); ?>";	
+	   }
+	   void(0);
+	}
+</script>

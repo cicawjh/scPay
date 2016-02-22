@@ -1,0 +1,15 @@
+<div style="color:#CC0000;font-size:12px;">Please log in !</div>
+<div>
+	<form id="login_form" name="login_form" action="<?php echo $this->url(
+            array('controller'=>'login'), 'default', true); ?>" method="POST">
+		<div>Merchant Email:</div>
+		<div><?php echo $this->formText('login_id', '', array('size' => 18)); ?></div>
+		<div>&nbsp;</div>
+		<div>Login Password:</div>
+		<div><?php echo $this->formPassword('login_pass', '', array('size' => 18)); ?></div>
+		<div>&nbsp;</div>
+		<?php echo $this->formHidden('action','login');?>
+		<div><?php echo $this->formSubmit('submit','Submit'); ?></div>
+		<div><a href="<?php echo $this->url(array('controller'=>'login','action'=>'forgotpass'),'default',true); ?>">Forgot you password?</a></div>
+	</form>
+</div>

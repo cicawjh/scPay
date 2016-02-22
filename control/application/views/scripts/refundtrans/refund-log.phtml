@@ -1,0 +1,32 @@
+<div style="margin-top: 20px;"><b>Refund History</b></div>
+<form id="SearchForm" name="SearchForm" method="post" action="<?php echo $this->url(array('controller'=>'Refundtrans','action'=>'refundLog'), 'default', true);?>">
+<div class="toolbar" style="margin-top:15px;"><b>From:</b><?php echo $this->formText('begin', $this->params['begin'], array('size' => 10,'style'=>'font-size:11px;')); ?> <b>To:</b><?php echo $this->formText('to', $this->params['to'], array('size' => 10,'style'=>'font-size:11px;')); ?> <b>Inv#:</b><?php echo $this->formText('inv_no', $this->params['inv_no'], array('size' => 8,'style'=>'font-size:11px;')); ?> <b>Customer:</b><?php echo $this->formText('customer', $this->params['customer'], array('size' => 12,'style'=>'font-size:11px;')); ?> <b>TransID:</b><?php echo $this->formText('transid', $this->params['transid'], array('size' => 10,'style'=>'font-size:11px;')); ?> <?php echo $this->formSubmit('submit','Search',array('style'=>'font-size:11px;')); ?><?php echo $this->formButton('button','Return',array('style'=>'font-size:11px;','onclick'=>"location.href='". $this->url(array('controller'=>'Systemset'), 'default', true)."';")); ?></div>
+</form>
+<div class="tableout">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#ffffff>
+			<th align="center" width="60">TransID</th>
+			<th>Inv#</th>
+			<th>Merchant</th>
+			<th>Amount</th>
+			<th>User</th>
+			<th>Refund Date</th>
+		</tr>
+		<?php if (sizeof($this->refoundLogs)) {
+			   foreach ($this->refoundLogs as $key => $val): 
+		?>
+			      <tr bgcolor=#ffffff height="20">
+				    <td align=center><?php echo $this->escape($val['trans_id']); ?></td>
+				    <td><?php echo $this->escape($val['invoice']); ?></td>
+				    <td><?php echo $this->escape($val['merchant_name']); ?></td>
+				    <td><?php echo $this->escape($val['amount']); ?></td>
+				    <td><?php echo $this->escape($val['user_name']); ?></td>
+				    <td><?php echo $this->escape(date('m/d/Y H:i',$val['optime'])); ?></td>
+			      </tr>
+		<?php
+		           endforeach; 
+		      }	
+		?>
+	</table>
+</div>
+<div style="margin-top:5px;text-align:right;"><?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagelist.phtml'); ?></div>

@@ -1,0 +1,55 @@
+<div class="tableout"><table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+	<tr bgcolor=#ffffff>
+		<th>TransID</th>
+		<th>Inv#</th>
+		<th width="40"><select name="trans_type" class="changelist" style="width:50px;"><option>Type</option><?php
+		foreach($this->transtypes as $key=>$type){
+			if($this->post['trans_type']==$key){$isselected=' selected="selected"';}else{$isselected='';}
+		?><option value="<?php echo $key; ?>"<?php echo $isselected;?>><?php echo $type; ?></option><?php
+		}
+		?></select></th>
+		<th width="40"><select name="trans_status" class="changelist" style="width:60px;"><option>Status</option><?php
+		foreach($this->transtatus as $key=>$status){
+			if($this->post['trans_status']==$key){$isselected=' selected="selected"';}else{$isselected='';}
+		?><option value="<?php echo $key; ?>"<?php echo $isselected;?>><?php echo $status; ?></option><?php
+		}
+		?></select></th>
+		<th>Time</th>
+		<th>Customer</th>
+		<th>CC#</th>	
+		<th>Amount</th>
+		<th>Fee</th>
+		<th>Net</th>
+	</tr>
+<?php
+if (sizeof($this->transaction)) {
+	foreach ($this->transaction as $key => $val){
+?>
+	<tr bgcolor="#ffffff" class="transitem">
+		<td align=center><a href="<?php echo $this->url(array('controller'=>'Transinfo','action'=>'index','id'=>$this->escape($val['ptransid'])), 'default', true);?>" style="text-decoration: underline;"><?php echo $this->escape($val['ptransid']); ?></a></td>
+		<td><?php echo $this->escape($val['trans_invoice']); ?></td>
+		<td><?php echo $this->escape($val['transtype_name']); ?></td>
+		<td><?php echo $this->escape($val['transtatus_name']),$val['locked']?' <font color="red" title="Locked">(L)</font>':''; ?></td>
+		<td width=70px;><?php echo $this->escape($val['trans_date']); ?></td>
+		<td><?php echo $this->escape($val['trans_ccowner']); ?></td>
+		<td><?php echo $this->escape('XXXX'.substr($val['trans_ccnum'],-4,4)); ?></td>   
+		<td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_amount']); ?></td>
+		<td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_fee']); ?></td>
+		<td align=right><?php echo $this->merchant_info['symbol'].$this->escape($val['trans_net']); ?></td>
+	</tr>
+	
+<?php
+	}
+?>
+	<tr bgcolor="#ffffff" class="transitem" style="height:28px;color:red;font-weight:bold;">
+		<td colspan="7">count:<?php echo $this->statinfo['cnt']; ?> record</td>
+		<td align=right><?php echo $this->statinfo['trans_amount']; ?></td>
+		<td align=right><?php echo $this->statinfo['trans_fee']; ?></td>
+		<td align=right><?php echo $this->statinfo['trans_net']; ?></td>
+	</tr>
+<?php
+}
+?>
+</table></div>
+
+<div style="margin-top:5px;text-align:right;" class="pagelist"><?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagelist.phtml'); ?></div>

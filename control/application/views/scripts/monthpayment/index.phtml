@@ -1,0 +1,12 @@
+<div class="cfix tloc"><div class="plocation"><div class="location">Month Payment</div></div></div>
+
+<div style="margin-top: 20px;"><?php echo $this->pay_form;?></div>
+<script type="text/javascript">
+	function update_payment(theForm) {
+	   if (theForm.collecttype.value==5) {
+	      theForm.paymentamount.readOnly = true;
+	   } else {
+	      theForm.paymentamount.readOnly = false;
+	   }
+	}
+</script>

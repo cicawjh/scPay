@@ -1,0 +1,36 @@
+<div style="margin-top: 5px;color:#CC0000;">User Role Setting</div>
+
+<div class="tableout">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#FFFFFF align=center>
+			<td width="50" align="center">ID</td>
+			<td>Role Name</td>
+			<td>Introduce</td>
+			<td colspan="2">Action</td>
+		</tr>
+	<?php
+		foreach ($this->AllRole as $key => $val): 
+	?>
+		<tr bgcolor=#ffffff>
+		    <td width="50" align="center"><?php echo $this->escape($val['roleid']); ?></td>
+		    <td><?php echo $this->escape($val['rolename']); ?></td>
+		    <td><?php echo $this->escape($val['intro']); ?></td>
+		    <td width="30" align="center"><a href="<?php echo $this->url(array('controller'=>'Administratorrole','action'=>'editrole','roleid'=> $this->escape($val['roleid'])), 'default', true); ?>">Edit</a></td>
+		    <td width="30" align="center"><a href="<?php echo $this->url(array('controller'=>'Administratorrole','action'=>'delrole','roleid'=> $this->escape($val['roleid'])), 'default', true); ?>" class="deleterole">Delete</a></td>
+		</tr>
+	<?php	
+		endforeach; 
+		?>
+	</table>
+</div>
+
+<div style="margin-top: 10px;"><a href="<?php echo $this->url(array('controller'=>'Administratorrole','action'=>'editrole'), 'default', true); ?>" style="color:#CC0000;">Add User Role</a></div>
+<script type="text/javascript" language="javascript">
+	$(window).ready(function(){
+		$(".deleterole").click(function(){
+			if(!confirm("Are you sure to delete this role?")){
+				return false;
+			}
+		});
+	});
+</script>

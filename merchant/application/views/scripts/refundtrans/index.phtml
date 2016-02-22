@@ -1,0 +1,104 @@
+
+<div style="margin-top: 5px;color:#CC0000;">Refund Transaction</div>
+<div style="margin-top:20px;">Click OK to continue this action and Refund this transaction. Click Cancel to abort this action.</div>
+<?php 
+	if (strtotime($this->transaction['trans_date']) > strtotime("-1 day")) {
+?>
+<form name="refundForm" id="refundForm" method="POST" action="<?php echo $this->url(array('controller'=>'Refundtrans','action'=>'refund'), 'default', true); ?>">
+<div style="margin-top:5px;padding-left:20px;"><input type="hidden" name="transID" id="transID" value="<?php echo $this->transaction['ptransid'];?>"></div>
+<div style="margin-top:5px;padding-left:20px;"><input type="hidden" name="refund_amount" id="refund_amount" value="<?php echo $this->transaction['ag_amount'];?>"></div>
+<div style="margin-top:5px;padding-left:20px;"><input type="hidden" name="refund_desc" id="refund_desc" value="Unsettle Void"></div>
+<div style="margin-top:5px;padding-left:20px;"><input type="submit" value="Void"><input type="button" value="Cancel" onClick="location.href='<?php echo $this->url(array('controller'=>'Transinfo','action'=>'index','id'=>$this->transaction['ptransid']), 'default', true);?>';"></div>
+</form>
+<?php
+	} else {
+?>
+<form name="refundForm" id="refundForm" method="POST" action="<?php echo $this->url(array('controller'=>'Refundtrans','action'=>'refund'), 'default', true); ?>">
+<div class="tableshow">
+<dl><dt>Invoice#: </dt><dd><b><?php echo $this->transaction['trans_invoice'];?></b></dd></dl>
+<dl><dt>Customer Name: </dt><dd><b><?php echo $this->transaction['trans_ccowner'];?></b></dd></dl>
+<dl><dt>Card Number:</dt><dd><b><?php echo $this->escape('XXXX'.substr($this->transaction['trans_ccnum'],-4,4));?></b></dd></dl>
+<dl><dt>Expire Date:</dt><dd><b><?php echo 'XXXX';?></b></dd></dl>
+<dl><dt>Payment Amount#: </dt><dd><b id=""><?php echo $this->symbol.$this->transaction['ag_amount'];?></b></dd></dl>
+<input type="hidden" name="transID" id="transID" value="<?php echo $this->transaction['ptransid'];?>">
+<dl><dt>Refund Amount#:</dt><dd><input type="text" name="refund_amount" id="refund_amount"></dd></dl>
+<dl><dt>Description:</dt><dd><input type="text" name="refund_desc" id="refund_desc"></dd></dl>
+<?php
+if(true){
+?>
+<dl><dt></dt><dd><input type="checkbox" value="1" name="isnewcard" id="isnewcard" />Refund to new credit card</dd></dl>
+<div id="creditinfo" style="display:none">
+<dl><dt>New Card Number:</dt><dd><input type="text" size="20" readonly="readonly" name="credit_card_num" maxlength="20" value="<?php echo $this->newAgtrans['trans_ccnum']; ?>" /> <font color="red">This is readonly.</font></dd></dl>
+<dl><dt>CVV2:</dt><dd><input type="text" size="20" maxlength="4" name="credit_card_cvv2" value="<?php echo $this->newAgtrans['trans_cvv2']; ?>" /></dd></dl>
+<dl><dt>Expiration Date:</dt><dd><select name="credit_expires_month">
+<?php
+ $monthArr=array('01'=>'January','02'=>'February','03'=>'March','04'=>'April','05'=>'May','06'=>'June',
+ '07'=>'July','08'=>'August','09'=>'September','10'=>'October','11'=>'November','12'=>'December');
+ $dm=substr($this->newAgtrans['trans_expire'],0,2);
+ foreach($monthArr as $key=>$v){
+	echo '<option value="'.$key.'"';
+	if($key==$dm){ echo 'selected="selected"';}
+	echo '>'.$v.'</option>';
+ }
+?>
+</select> <select name="credit_expires_year">
+<?php
+$startyear=date('Y');
+$dyear=substr($this->newAgtrans['trans_expire'],2);
+for($year=$startyear;$year<$startyear+10;$year++){
+	$dy=substr($year,2);
+	echo '<option value="'.$dy.'"';
+	if($dyear==$dy){ echo 'selected="selected"';}
+	echo '>'.$year.'</option>';
+}
+?>
+</select></dd></dl>
+<dl><dt>Owner:</dt><dd><input type="text" name="credit_card_ccowner" value="<?php echo $this->newAgtrans['trans_ccowner']; ?>" /></dd></dl>
+</div>
+<?php } ?>
+<dl><dt></dt><dd><input type="submit" value="OK"><input type="button" value="Cancel" onClick="location.href='<?php echo $this->url(array('controller'=>'Transinfo','action'=>'index','id'=>$this->transaction['ptransid']), 'default', true);?>';"></dd></dl>
+</div></form>
+
+<?php  }?>
+<div id="prompt"></div>
+<script type="text/javascript">
+ function disablebtn(){
+	$('form').find('input[type="button"],input[type="submit"]').attr('disabled',true);
+	$("#prompt").css('color','red').html('Please wait for submit your request.');
+ };
+ 
+ $(window).ready(function(){
+ 	$("#creditinfo input[type='text']").focus(function(){
+		$(this).select();
+	});
+ 	$("#isnewcard").click(function(){
+		if($(this).attr('checked')){
+			$("#creditinfo").show();
+		}else{
+			$("#creditinfo").hide();
+		}
+	});
+	
+	$("#refundForm").submit(function(){
+		var ramount=$("input[name='refund_amount']").val();
+		if(!ramount.match(/^\d+(\.\d+)?$/)||parseFloat(ramount)><?php echo is_numeric($this->transaction['ag_amount'])?$this->transaction['ag_amount']:0 ; ?>){
+			alert('To enter a correct refund!');return false;	
+		}
+		
+		if($("#isnewcard").attr('checked')){
+			var c_num=$("input[name='credit_card_num']").val(),c_cvv2=$("input[name='credit_card_cvv2']").val();
+			var c_em =parseInt($("select[name='credit_expires_month']").val()),c_ey = parseInt($("select[name='credit_expires_year']").val());
+			if(c_num==''){
+				alert('Please enter credit card number.');return false;
+			}
+			
+			var car_valid=new cc_validation();
+			if(car_valid.validate(c_num,c_cvv2,c_em,c_ey) !== true){
+				alert('Please enter correct credit card infomation.');return false;
+			}
+			
+		}	
+		disablebtn();
+	});
+ });
+</script>

@@ -1,0 +1,74 @@
+<form id="Rolefrom" class="usualfrom" method="post" action="<?php echo $this->url(array('controller'=>'Administratorrole','action'=>'editrole'), 'default', true); ?>">
+<input type="hidden" name="roleid" id="roleid" value="<?php echo $this->Role['roleid']; ?>" />
+<dl><dt>Role Name</dt><dd><input type="text" size="20" name="rolename" id="rolename" value="<?=$this->Role['rolename']?>" />
+<span id="rolenameerr" style="color:red"><?php if($this->errmsg['rolename']){ ?>
+<?php echo $this->errmsg['rolename']; ?>
+<?php } ?></span></dd></dl>
+<dl><dt>Role Introduce</dt><dd><textarea name="intro"><?=$this->Role['intro']?></textarea></dd></dl>
+<dl><dt>Inherit</dt><dd class="inherit">
+<div><select name="inherit[]" size="5" id="inheritselect" multiple="multiple">
+<optgroup label="--Inherit Role--"></optgroup>
+<?php
+if($this->AllRole){
+	foreach($this->AllRole as $value){
+		if(is_array($this->Role['inherit'])&&in_array($value['roleid'],$this->Role['inherit'])){
+?><option value="<?=$value['roleid']?>"><?=$value['rolename']?></option><?php
+	}}
+}
+?>
+</select></div>
+<div><input type="button" value="<<" onclick="addInherit()" /><br /><br />
+<input type="button" value=">>" onclick="removeInherit()" /></div>
+<div><select size="5" id="allinherit">
+<optgroup label="--All Role--"></optgroup>
+<?php
+if($this->AllRole){
+	foreach($this->AllRole as $value){
+		if((is_array($this->Role['inherit'])&&in_array($value['roleid'],$this->Role['inherit']))||$this->Role['roleid']==$value['roleid']){ continue;}
+?><option value="<?=$value['roleid']?>"><?=$value['rolename']?></option><?php
+	}
+}
+?>
+</select></div>
+</dd></dl>
+<div style="clear:both;height:4px;overflow:hidden;">&nbsp;</div>
+<dl><dt>Role Purview</dt><dd class="purview"><?php
+if($this->AllPurviews){
+?><ul><?php
+	if(is_array($this->Role['purview'])){$rolepurview=$this->Role['purview'];}else{$rolepurview=array();}
+	foreach($this->AllPurviews as $key=>$text){
+	?><li><input type="hidden" value="<?=$key?>" name="purview[]" id="purview_<?=$key?>" />
+	<select name="purviewval[]">
+	<option value="0">Inherit</option>
+	<option value="1"<?php if($rolepurview[$key]==1) {echo ' selected="selected"';} ?>>Allow</option>
+	<option value="-1"<?php if($rolepurview[$key]==-1) {echo ' selected="selected"';} ?>>Deny</option>
+	</select> <label><?=$text?></label></li><?php
+	}
+?></ul><?php
+}
+?></dd></dl>
+<div style="clear:both;height:4px;overflow:hidden;">&nbsp;</div>
+<?php if($this->success){ ?>
+<dl><dt>&nbsp;</dt><dd style="color:green"><?php echo $this->success; ?></dd></dl>
+<?php } ?>
+<?php if($this->errmsg['error']){ ?>
+<dl><dt>&nbsp;</dt><dd style="color:red"><?php echo $this->errmsg['error']; ?></dd></dl>
+<?php } ?>
+<dl><dt>&nbsp;</dt><dd><input type="submit" name="button" id="button" value="Save Role Setting" /> <input type="button" name="cancel" id="cancel" value="Cancel&Back to Role List" onclick="location.href='<?php echo $this->url(array('controller'=>'Administratorrole','action'=>'index'), 'default', true); ?>'" /></dd></dl></form>
+<script type="text/javascript" language="javascript">
+	function addInherit(){
+		$("#inheritselect").append($("#allinherit option:selected"));
+	}
+	function removeInherit(){
+		$("#allinherit").append($("#inheritselect option:selected"));
+	}
+	$(document).ready(function(){
+		$("#Rolefrom").submit(function(){
+			if($("#rolename").val()==''){
+				$("#rolenameerr").html("Value is required and can't be empty");
+				return false;
+			}
+			$("select[name='inherit[]'] option").attr('selected',true);
+		});
+	});
+</script>

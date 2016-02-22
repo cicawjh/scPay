@@ -1,0 +1,60 @@
+<div style="margin-top: 5px;color:#CC0000;">System Setting</div>
+<div style="margin-top: 20px;"><b>Gateway Tables</b></div>
+<div class="tableout">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#ffffff>
+			<th>ID</th>
+			<th>Title</th>
+			<th>Url</th>
+			<th>Login</th>
+			<th>Key</th>
+			<th></th>
+		</tr>
+		<?php if (sizeof($this->gateways)) {
+			   foreach ($this->gateways as $key => $val): 
+		?>
+			      <tr bgcolor=#ffffff height="20">
+				    <td align=center><a href="<?php echo $this->url(array('controller'=>'Gatewayinfo','action'=>'edit','gid'=>$this->escape($val['gatewayid'])), 'default', true);?>" style="text-decoration: underline;"><?php echo $this->escape($val['gatewayid']); ?></a></td>
+				    
+				    <td><?php echo $this->escape($val['gateway_title']); ?></td>
+				    <td><?php echo $this->escape($val['gateway_url']); ?></td>
+				    <td><?php echo $this->escape($val['gateway_login']); ?></td>
+				    <td><?php echo $this->escape($val['gateway_key']); ?></td>
+				    <td><a href="<?php echo $this->url(array('controller'=>'Gatewayinfo','action'=>'edit','gid'=>$this->escape($val['gatewayid'])), 'default', true);?>" style="text-decoration: underline;">Edit</a>&nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'Gatewayinfo','action'=>'delete','gid'=>$this->escape($val['gatewayid'])), 'default', true);?>" style="text-decoration: underline;">Delete</a></td>
+			      </tr>
+		<?php
+		           endforeach; 
+		      }	
+		?>
+	</table>
+</div>
+<div style="margin-top: 10px;"><a href="<?php echo $this->url(array('controller'=>'Gatewayinfo','action'=>'Add'), 'default', true); ?>" style="color:#CC0000;">Add New Gateway</a></div>
+<div style="margin-top: 20px;"><b>User Tables</b></div>
+<div class="tableout">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#ffffff>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Action</th>
+		</tr>
+		<?php if (sizeof($this->users)) {
+			   foreach ($this->users as $key => $val): 
+		?>
+			      <tr bgcolor="#ffffff">
+				    <td align="center" width="50"><a href="<?php echo $this->url(array('controller'=>'Userinfo','action'=>'edit','uid'=>$this->escape($val['userid'])), 'default', true);?>" style="text-decoration: underline;"><?php echo $this->escape($val['userid']); ?></a></td>
+				    <td><?php echo $this->escape($val['user_name']); ?></td>
+				    <td width="180"><a href="<?php echo $this->url(array('controller'=>'Userinfo','action'=>'edit','uid'=>$this->escape($val['userid'])), 'default', true);?>" style="text-decoration: underline;">Edit info</a> <a href="<?php echo $this->url(array('controller'=>'Userinfo','action'=>'Changepass','uid'=>$this->escape($val['userid'])), 'default', true);?>" style="text-decoration: underline;">Reset Password</a>&nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'Userinfo','action'=>'Delete','uid'=>$this->escape($val['userid'])), 'default', true);?>" style="text-decoration: underline;">Delete</a></td>
+			      </tr>
+		<?php
+		           endforeach; 
+		      }	
+		?>
+	</table>
+</div>
+<div style="margin-top: 10px;"><a href="<?php echo $this->url(array('controller'=>'Userinfo','action'=>'Add'), 'default', true); ?>" style="color:#CC0000;">Add New User</a></div>
+
+<div style="margin-top: 10px;"><a href="<?php echo $this->url(array('controller'=>'Refundtrans','action'=>'refundLog'), 'default', true); ?>" style="color:#CC0000;">Show refund logs(<?=$this->logCount['cnt']?>)</a></div>
+
+<div style="margin-top: 10px;"><a href="<?php echo $this->url(array('controller'=>'Systemset','action'=>'mailconfig'), 'default', true); ?>" style="color:#CC0000;">Set Email Templates</a></div>
+
+<div style="margin-top: 10px;"><a href="<?php echo $this->url(array('controller'=>'Administratorrole','action'=>'index'), 'default', true); ?>" style="color:#CC0000;">User Role Setting</a></div>

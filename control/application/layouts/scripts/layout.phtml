@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<?php 
+	$request = Zend_Controller_Front::getInstance()->getRequest(); 
+	$base_url = $request->getBaseUrl();
+	$base_url .= '/public';
+	$this->headTitle('Miccostumes.com') 
+           ->headTitle($request->getControllerName()) 
+           ->setSeparator(' | '); 
+
+	$this->headLink()->appendStylesheet($base_url."/css/stylesheet.css"); 
+	$this->headScript()->prependFile($base_url.'/js/common.js');
+	$this->headScript()->prependFile($base_url.'/js/jquery-1.3.2.js');
+?>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<?php echo $this->headTitle();?>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<?php echo $this->headScript();?>
+<?php
+	echo $this->headLink(); 
+?>
+</head>
+<body>
+<div class="content cfix">
+	<!-- header begin-->
+	<div class="header">
+		<?php echo $this->layout()->header; ?>
+	</div>
+	<!-- header end-->
+
+	<!-- left begin-->
+	<div class="mainbody">
+		<?php echo $this->layout()->content; ?>
+	</div>
+	<!-- left end-->
+</div>
+<!-- footer begin-->
+<div class="footer"><?php echo $this->layout()->footer; ?></div>
+<!-- footer end-->
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+RewriteEngine on
+RewriteBase /public/
+
+#RewriteCond %{REQUEST_URI} \..+$
+#RewriteCond %{REQUEST_URI} !\.html$
+#RewriteRule .* - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule .* index.php

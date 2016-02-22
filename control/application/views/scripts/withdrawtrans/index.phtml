@@ -1,0 +1,46 @@
+<div class="cfix tloc"><div class="plocation"><div class="location">Withdraw Transaction List</div></div></div>
+
+<div class="tableout" style="margin-top:20px;">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#ffffff>
+			<th>TransID</th>
+			<th>Withdraw Date</th>
+			<th>Merchant Name</th>
+			<th>Account Status</th>
+			<th>Account Balance</th>
+			<th>Account Reserve</th>
+			<th>Withdraw Limit</th>
+			<th>Withdraw Amount</th>	
+			<th>Withdraw Fee</th>
+			<th>Apply Withdraw</th>
+			<th>Status</th>
+		</tr>
+	<?php if (sizeof($this->withdrawtrans)) {
+		$i = 0;
+		$start_row = (($this->page-1) * $this->numPerPage) + 1;
+		$end_row = $this->page * $this->numPerPage;
+		foreach ($this->withdrawtrans as $key => $val): 
+			$i++;
+			
+			if ($i >=$start_row && $i <= $end_row) {
+	?>
+		<tr bgcolor=#ffffff>
+		    <td align=center><a href="<?php echo $this->url(array('controller'=>'Withdrawinfo','action'=>'index','mid'=>$this->escape($val['mid']),'id'=>$this->escape($val['ptransid'])), 'default', true);?>" style="text-decoration: underline;"><?php echo $this->escape($val['ptransid']); ?></a></td>
+		    <td width=70px;><?php echo $this->escape($val['trans_date']); ?></td>
+		    <td><?php echo $this->escape($val['merchant_name']); ?></td>
+		    <td><?php echo $this->escape($val['merchant_status']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['amount_balance']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['amount_reserve']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['withdraw_limit']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['withdraw_amount']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['withdraw_fee']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['apply_withdraw']); ?></td>
+		    <td><?php echo $this->escape($val['withdraw_status']); ?></td>
+		</tr>
+		
+	<?php		}
+		endforeach; 
+	      }?>
+	</table>
+</div>
+<div style="margin-top:5px;text-align:right;"><?php echo $this->paginationControl($this->paginator, 'Sliding', 'pagelist.phtml'); ?></div>

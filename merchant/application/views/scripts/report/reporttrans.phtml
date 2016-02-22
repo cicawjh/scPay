@@ -1,0 +1,95 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest(); 
+$base_url = $request->getBaseUrl();
+$base_url .= '/public';
+$this->headScript()->appendFile($base_url.'/js/datepicker/jquery.datepick.js');
+$this->headLink()->appendStylesheet($base_url.'/js/datepicker/redmond.datepick.css');
+?>
+<div style="margin-top: 5px;color:#CC0000;">Transaction Statistics Condition</div>
+<form id="reportcon" method="post" action="" style="margin:0px;padding:0px;">
+
+<div style="margin:15px 0px;">Begin Date:
+  <input type="text" name="start_date" id="start_date" size="15" value="<?php echo $this->begindate?$this->begindate:date('Y-m-d',mktime(0, 0, 0, date("m")-1, date("d"),date("Y")));?>" /> 
+  End Date:
+  <input type="text" name="end_date" id="end_date" size="15" />
+  <input type="button" name="button" id="getstat" value="Generate Report" />
+</div>
+
+<div id="prompt"></div>
+
+<div class="statinfo" style="display:none;">
+<div style="margin-top:5px;clear:both;">
+<div style="margin: 5px 0px;color:#CC0000;">Transaction Type Statistics Report</div>
+<div class="tableout"><table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+  <tr>
+  	<th bgcolor="#ffffff" width="60"></th>
+    <th bgcolor="#ffffff">Pending</th>
+    <th bgcolor="#ffffff">Reseved</th>
+    <th bgcolor="#ffffff">Refund</th>
+    <th bgcolor="#ffffff">Locked</th>
+  </tr>
+  <tr>
+  	<th bgcolor="#ffffff">Amount</th>
+    <td bgcolor="#ffffff" id="PendingA">&nbsp;</td>
+    <td bgcolor="#ffffff" id="ResevedA">&nbsp;</td>
+    <td bgcolor="#ffffff" id="RefundA">&nbsp;</td>
+    <td bgcolor="#ffffff" id="LockedA">&nbsp;</td>
+  </tr>
+  <tr>
+  	<th bgcolor="#ffffff">Count</th>
+    <td bgcolor="#ffffff" id="Pendingc">&nbsp;</td>
+    <td bgcolor="#ffffff" id="Resevedc">&nbsp;</td>
+    <td bgcolor="#ffffff" id="Refundc">&nbsp;</td>
+    <td bgcolor="#ffffff" id="Lockedc">&nbsp;</td>
+  </tr>
+</table></div>
+</div>
+
+<div style="margin-top: 5px;color:#CC0000;">Transaction Statistics Report</div>
+
+<div id="translist"></div>
+</div>
+</form>
+<script type="text/javascript">
+ $(document).ready(function(){
+	$("#getstat").click(function(){
+		$("#prompt").html('Please wait for generating reports....').show();
+		$.getJSON('<?php echo $this->url(array('controller'=>'report','action'=>'reporttrans1')); ?>',{start_date:$("#start_date").val(),end_date:$("#end_date").val()},function(json){
+			$("#PendingA").html(json.pending_amount);
+			$("#ResevedA").html(json.received_amount);
+			$("#RefundA").html(json.refund_amount);
+			$("#LockedA").html(json.locked_amount);
+			$("#Pendingc").html(json.pending_count);
+			$("#Resevedc").html(json.received_count);
+			$("#Refundc").html(json.refund_count);
+			$("#Lockedc").html(json.locked_count);
+		});
+		showlist($("#reportcon").serialize(),"<?php echo $this->url(array('controller'=>'report','action'=>'gettl')); ?>");
+		$(".statinfo").show();
+		$("#prompt").html('Reports has generated....').hide();
+	});
+
+	$('#start_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',defaultDate:$('#start_date').val(),showBigPrevNext:true});
+	$('#end_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+	
+ });
+ function showlist(dataval,dataurl){
+ 	if(dataval!=''){datatype='POST';}else{datatype='GET';}
+ 	$.ajax({
+		type:datatype,
+		url:dataurl,
+		data:dataval,
+		success:function(msg){
+			$("#translist").html(msg);
+			$(".changelist").change(function(){
+				showlist($("#reportcon").serialize(),"<?php echo $this->url(array('controller'=>'report','action'=>'gettl')); ?>");
+			});
+			
+			$(".pagelist a").click(function(){
+				showlist('',$(this).attr('href'));
+				return false;
+			});
+		}
+	}); 	
+ }
+</script>

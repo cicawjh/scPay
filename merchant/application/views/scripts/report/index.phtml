@@ -1,0 +1,26 @@
+<?php
+$request = Zend_Controller_Front::getInstance()->getRequest(); 
+$base_url = $request->getBaseUrl();
+$base_url .= '/public';
+$this->headScript()->appendFile($base_url.'/js/datepicker/jquery.datepick.js');
+$this->headLink()->appendStylesheet($base_url.'/js/datepicker/redmond.datepick.css');
+?>
+<div style="margin-top: 5px;color:#CC0000;">Transaction Statistics Report</div>
+<div style="margin-top:20px;">This report lists aggregate transaction statistics for the date or date range you select. </div>
+<div style="margin-top:20px;">
+<div style="margin:auto;width:300px;">
+<form id="report_form" name="report_form" action="<?php echo $this->url(array('controller'=>'Report','action'=>'Search'), 'default', true); ?>" method="POST">
+<div style="clear:both;"><span style="float:left;width:70px;">Start Date:</span><?php echo $this->formText('start_date', date('Y-m-d',mktime(0, 0, 0, date("m")-1, date("d"),date("Y"))), array('size' => 18)); ?></div>
+<div style="clear:both;">&nbsp;</div>
+<div style="clear:both;"><span style="float:left;width:70px;">End Date:</span><?php echo $this->formText('end_date', date('Y-m-d'), array('size' => 18)); ?></div>
+<div style="clear:both;">&nbsp;</div>
+<div style="clear:both;text-align:center;"><?php echo $this->formSubmit('submit','Run Report');?></div>
+</form>
+</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#start_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',defaultDate:$('#start_date').val(),showBigPrevNext:true});
+	$('#end_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+});
+</script>

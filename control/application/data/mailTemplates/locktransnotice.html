@@ -1,0 +1,28 @@
+Dear [#$merchants['merchant_name']#],<br><br>
+
+[#$get['EmailNotice']#]<br><br>
+
+========= GENERAL INFORMATION =========<br><br>
+Date/Time :[#date("Y-m-d H:i:s")#]<br>
+Transaction ID :[#$transaction['ptransid']#]<br><br>
+========= ORDER INFORMATION =========<br><br>
+Type : REFUND<br>
+Invoice Number : [#$transaction['trans_invoice']#]<br>
+Description : [#$transaction['trans_desc']#]<br>
+Total : US $[#$transaction['trans_amount']#]<br><br>
+==== BILLING INFORMATION ===<br><br>
+Billing Name :[#$transaction['trans_ccowner']#]<br>
+Address :[#$transaction['customer_street']#]<br>
+City :[#$transaction['customer_city']#]<br>
+State/Province :[#$transaction['customer_state']#]<br>
+Zip/Postal Code :[#$transaction['shipping_postcode']#]<br>
+Country :[#$transaction['customer_country']#]<br>
+Phone :[#$transaction['customer_telephone']#]<br>
+Email :[#$transaction['customer_email']#]<br><br>
+==== SHIPPING INFORMATION ===<br><br>
+Shipping Name :[#$transaction['shipping_name']#]<br>
+Address :[#$transaction['shipping_street']#]<br>
+City :[#$transaction['shipping_city']#]<br>
+State/Province :[#$transaction['shipping_state']#]<br>
+Zip/Postal Code :[#$transaction['shipping_zip']#]<br>
+Country :[#$transaction['shipping_country']#]<br>

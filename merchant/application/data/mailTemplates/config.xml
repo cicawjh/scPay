@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configdata>
+	<receive>
+		<filename>receive.html</filename>
+		<name>receive notification</name>
+		<subject>WWW MICCOSTUMES COM Customer Receipt/Purchase Confirmation</subject>
+	</receive>
+	<refund>
+		<filename>refund.html</filename>
+		<name>refund notification</name>
+		<subject>WWW MICCOSTUMES COM Customer Refund Notification</subject>
+	</refund>
+	<register>
+		<filename>register.html</filename>
+		<name>merchant register notification</name>
+		<subject>WWW MICCOSTUMES COM Merchant Apply Success</subject>
+	</register>
+	<enabled>
+		<filename>enabled.html</filename>
+		<name>enabled merchant notification</name>
+		<subject>WWW MICCOSTUMES COM Merchant Approved Notification</subject>
+	</enabled>
+	<suspend>
+		<filename>suspend.html</filename>
+		<name>suspend merchant notification</name>
+		<subject>WWW MICCOSTUMES COM Merchant Suspended Notification</subject>
+	</suspend>
+</configdata>

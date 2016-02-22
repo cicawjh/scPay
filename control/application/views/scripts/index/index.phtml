@@ -1,0 +1,45 @@
+<div class="cfix tloc"><div class="plocation"><div class="location">Index</div></div></div>
+<div style="margin-top:20px;">Top 5 Merchants</div>
+<div class="tableout" style="margin-top:10px;">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#FFFFFF>
+			<td>Merchant Name</td><td align=right>Received Money</td><td align=right>Balance Amount</td>
+		</tr>
+	<?php if (sizeof($this->merchants)) {
+			$i = 0;
+			foreach ($this->merchants as $key => $val): 
+			$i++;
+		?>
+		<tr bgcolor=#ffffff>
+		    <td><a href="<?php echo $this->url(array('controller'=>'Merchanttrans','action'=>'Index','id'=> $this->escape($val['mid'])), 'default', true); ?>"><?php echo $i.'. '.$this->escape($val['merchant_name']); ?></a></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['received']); ?></td>
+		    <td align=right><?php echo $this->symbol.$this->escape($val['balance']); ?></td>
+		</tr>
+		
+	<?php		endforeach; 
+		}?>
+	</table>
+</div>
+<div style="margin-top:20px;">Last Year Received Total</div>
+<div class="tableout" style="margin-top:10px;">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr bgcolor=#FFFFFF align=center>
+		<?php if (sizeof($this->lastTotal)) {
+			foreach ($this->lastTotal as $key => $val): 
+		?>
+		    <td><?php echo $this->escape($val['yd']); ?></td>
+	
+		<?php		endforeach; 
+		}?>
+		</tr>
+		<tr bgcolor=#FFFFFF align=center>
+		<?php if (sizeof($this->lastTotal)) {
+			foreach ($this->lastTotal as $key => $val): 
+		?>
+		    <td><?php echo $this->symbol.$this->escape($val['received']); ?></td>
+	
+	<?php		endforeach; 
+		}?>
+		</tr>
+	</table>
+</div>

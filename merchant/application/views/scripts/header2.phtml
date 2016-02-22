@@ -1,0 +1,21 @@
+<?php 
+	$request = Zend_Controller_Front::getInstance()->getRequest(); 
+	$base_url = $request->getBaseUrl();
+	$base_url .= '/public';
+?>
+<div class="top">
+	<div class="logo"><a href="<?php echo $this->url(array('controller'=>'index'), 'default', true);?>">Secure Shopping Network</a></div>
+	<div class="login_box">
+		<a href="#">Contact Us</a> | <a href="<?php echo $this->url(array('controller'=>'login','action'=>'logoff'), 'default', true);?>">Log Out</a>
+	</div>
+</div>
+
+<div class="direction">
+	<ul>
+		<li><a href="<?php echo $this->url(array('controller'=>'Merchantoverview'), 'default', true);?>">Merchant Account</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Transaction'), 'default', true);?>">Transaction</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Withdraw'), 'default', true);?>">Withdraw</a></li>
+		<li><a href="<?php echo $this->url(array('controller'=>'Report'), 'default', true);?>">Report</a></li>
+		<li><a href="#">Resoucre</a></li>
+	</ul>
+</div>

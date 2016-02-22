@@ -1,0 +1,89 @@
+<div class="cfix tloc"><div class="plocation"><div class="location">Charge Back Block</div></div></div>
+
+<div style="margin:10px 0px;">Please Select Transaction Condition</div>
+
+<form action="" method="post" onsubmit="return check_form();"><div class="toolbar"><strong>Transaction Condition:</strong> Begin Date:
+ <input type="text" name="begin_date" id="begin_date" value="<?php echo $this->params['begin_date']; ?>" size="10" maxlength="10"/> 
+End Date :
+<input type="text" name="end_date" id="end_date" value="<?php echo $this->params['end_date']; ?>" size="10" maxlength="10"/> 
+CC#(Last 4 Digital):
+<input type="text" name="cc_no" id="cc_no" value="<?php echo $this->params['cc_no']; ?>" size="4" maxlength="4"/>
+<input type="submit" name="button" id="button" value="Search Tranaction" /></div></form>
+
+<div class="tableout" style="margin-top:10px;">
+	<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+		<tr>
+			<th bgcolor="#FFFFFF" align="center">TransID</th>
+			<th bgcolor="#FFFFFF" align="center">Merchant</th>
+			<th bgcolor="#FFFFFF" align="center">Inv#</th>
+			<th bgcolor="#FFFFFF" align="center">Time</th>
+			<th bgcolor="#FFFFFF" align="center">Customer</th>
+			<th bgcolor="#FFFFFF" align="center">CC#</th>
+			<th bgcolor="#FFFFFF" align="center">Amount</th>
+			<th bgcolor="#FFFFFF" align="center">Charge Back</th>
+		</tr>
+		<?php
+			if (sizeof($this->transactions)) {
+				foreach($this->transactions as $transactions){
+		?>
+			<tr>
+				<td bgcolor="#FFFFFF"><?php echo $this->escape($transactions['ptransid']); ?></td>
+				<td bgcolor="#FFFFFF"><?php echo $this->escape($transactions['merchant_name']); ?></td>
+				<td bgcolor="#FFFFFF"><?php echo $this->escape($transactions['trans_invoice']); ?></td>
+				<td bgcolor="#FFFFFF"><?php echo $this->escape($transactions['trans_date']); ?></td>
+				<td bgcolor="#FFFFFF"><?php echo $this->escape($transactions['trans_ccowner']); ?></td>
+				<td bgcolor="#FFFFFF" align="right"><?php echo $this->escape('XXXX'.substr($transactions['trans_ccnum'],-4,4));?></td>
+				<td bgcolor="#FFFFFF">$<?php echo $this->escape($transactions['trans_amount']); ?></td>
+				<td bgcolor="#FFFFFF" align="center">Charge Back It&nbsp;<input name="charge_it" id="charge_it" type="radio" value="<?php echo $this->escape($transactions['mid'].'_'.$transactions['ptransid']);?>" onClick="document.getElementById('charge_trans').value=this.value;"/></td>
+			</tr>
+		<?php
+				}
+		?>
+			<tr><td bgcolor="#FFFFFF" colspan="8"><form action="<?php echo $this->url(array('controller'=>'Chargeback','action'=>'Charge'), 'default', true);?>" method="post" name="charge_form">Description:&nbsp;<input name="charge_description" id="charge_description" size="100" value="<?php echo $this->params['charge_description']; ?>"><input type="button" value="Submit" onClick="script:chargeit();"><input type="hidden" id="charge_trans" name="charge_trans"><input type="hidden" name="begin_date" value="<?php echo $this->params['begin_date']; ?>"/><input type="hidden" name="end_date" value="<?php echo $this->params['end_date']; ?>"/><input type="hidden" name="cc_no" value="<?php echo $this->params['cc_no']; ?>"/></form></td></tr>
+		<?php
+			}
+		?>
+	</table>
+</div>
+
+
+<script type="text/javascript">
+ $(document).ready(function(){
+	$('#begin_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+	$('#end_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+});
+
+function check_form() {
+	var begin_date = document.getElementById('begin_date').value;
+	var end_date = document.getElementById('end_date').value;
+	var cc_no = document.getElementById('cc_no').value;
+
+	if (begin_date == ''){
+		alert('Please input the begin date!');
+		return false;
+	}
+
+	if (end_date == ''){
+		alert('Please input the end date!');
+		return false;
+	}
+
+	if (cc_no == ''){
+		alert('Please input the last 4 digital credit card number!');
+		return false;
+	}
+
+	return true;
+}
+
+function chargeit () {
+	var charge_trans = document.getElementById('charge_trans').value;
+	var charge_description = document.getElementById('charge_description').value;
+	if (charge_trans == ''){
+		alert('Please select a transaction to charge back!');
+		return false;
+	}
+
+	document.charge_form.submit();
+}
+</script>

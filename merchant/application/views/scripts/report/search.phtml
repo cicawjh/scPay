@@ -1,0 +1,21 @@
+<div style="margin-top: 5px;color:#CC0000;">Transaction Statistics Report</div>
+<div style="margin-top:20px;"><b><?php echo $this->merchant_info['merchant_name'];?></b></div>
+<div style="margin-top:5px;clear:both;">Merchant Number: <?php echo $this->merchant_info['merchant_number'];?></div>
+<div style="margin-top:20px;font-size:11px;">Transaction activity summary report for settlement batches: <?php echo $this->start_date.' - '.$this->end_date; ?></div>
+
+<div class="tableout">
+<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+	<tr bgcolor="#ffffff"><td colspan=2 style="padding-left:5px;">Transaction Volume Statistics</td></tr>
+	<tr bgcolor="#ffffff"><td width="50%"></td><td align="center">Totals</td></tr>
+	<tr bgcolor="#ffffff"><td width="50%" style="padding-left:5px;">Charge Count:</td><td align="right"><?php echo $this->reports['charge_count'];?></td></tr>
+	<tr bgcolor="#ffffff"><td width="50%" style="padding-left:5px;">Charge Amount:</td><td align="right">$<?php echo $this->reports['charge_amount'];?></td></tr>
+	<tr bgcolor="#ffffff"><td width="50%" style="padding-left:5px;">Refund Count:</td><td align="right"><?php echo $this->reports['refund_count'];?></td></tr>
+	<tr bgcolor="#ffffff"><td width="50%" style="padding-left:5px;">Refund Amount:</td><td align="right">$<?php echo $this->reports['refund_amount'];?></td></tr>
+	<tr bgcolor="#CCCCCC"><td width="50%" style="padding-left:5px;">Net Amount:</td><td align="right"><b>$<?php echo $this->reports['net_amount'];?></b></td></tr>
+
+	<tr bgcolor="#ffffff"><td colspan=2 style="padding-left:5px;">Additional Transaction Statistics</td></tr>
+	<tr bgcolor="#ffffff"><td width="50%" style="padding-left:5px;">Decline Count:</td><td align="right"><?php echo $this->reports['decline_count'];?></td></tr>
+	<tr bgcolor="#ffffff"><td width="50%" style="padding-left:5px;">Approval Percentage:</td><td align="right"><?php echo $this->reports['approval'];?>%</td></tr> 
+	<tr bgcolor="#ffffff"><td width="50%" style="padding-left:5px;">Void Count:</td><td align="right"><?php echo $this->reports['void_count'];?></td></tr>
+</table>
+</div>

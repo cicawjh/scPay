@@ -1,0 +1,37 @@
+<div style="margin-top: 5px;color:#CC0000;">Request Payout</div>
+<div style="margin-top:20px;">Weclome, <b><?php echo $this->merchant_info['merchant_name'];?></b> (<?php echo $this->merchant_info['merchant_email'];?>)</div>
+<div style="margin-top:5px;">Account Number: <?php echo $this->merchant_info['merchant_number'];?></div>
+<div style="margin-top:5px;">Account Status: <?php echo $this->merchant_info['mstatus_name'];?></div>			
+<div style="margin-top:5px;">Open Date: <?php echo $this->merchant_info['open_date'];?></div>
+<?php 
+	$balance = $this->merchant_info['amount_balance'];
+	$reserve = $this->merchant_info['amount_locked'] + $this->merchant_info['amount_reserve'];
+	if ($balance - $reserve >0) {
+	   $withdraw = $balance - $reserve;
+	} else {
+	   $withdraw = 0;
+	}
+?>
+<div style="margin-top:8px;"><b>Balance:</b> <?php echo $this->merchant_info['symbol'].$balance;?> <b>Reserve:</b> <?php echo $this->merchant_info['symbol'].$this->merchant_info['amount_reserve'];?> 
+<b>Locked:</b> <?php echo $this->merchant_info['symbol'].$this->merchant_info['amount_locked'];?> <b>Can Withdraw:</b> <?php echo $this->merchant_info['symbol'].$withdraw;?> </div>
+<?php if ($this->merchant_info['mstatusid'] == 2) {?>
+<div style="margin-top:20px;">Please enter the information to send a wire transfer to your China bank account. Please make sure that your China bank account can receive USD funds, and check with your receiving bank for the documentation you need to withdraw money to China.</div>
+<div style="margin-top:20px;">Wire transfers from your Secure Shopping Network account must meet the mininum withdrawal amount requirements. Your transfer will be completed in 3-7 buiness days depending on your bank's processing schedule and funds availability policy.</div>
+
+<form id="withdrawForm" name="withdrawForm" method="post" action="<?php echo $this->url(array('controller'=>'Withdraw','action'=>'confirm'), 'default', true);?>">
+<div style="margin-top:20px;">*Amount: <input name="withdraw_amount" id="withdraw_amount"> (Wire transfer fees will be deducted from this amount)</div>
+<div style="margin-top: 5px;">To:</div>
+<div style="margin-top: 5px;padding-left:15px;"><b>Bank Account#:</b> <?php echo $this->merchant_info['bf_acno'];?></div>
+<div style="margin-top: 5px;padding-left:15px;"><b>Account Name:</b> <?php echo $this->merchant_info['bf_name'];?></div>
+<div style="margin-top: 5px;padding-left:15px;"><b>Bank Name:</b> <?php echo $this->merchant_info['bf_acbank'];?></div>
+<div style="margin-top: 5px;padding-left:15px;"><b>Swift Code:</b> <?php echo $this->merchant_info['bf_bankswift'];?></div>
+<div style="margin-top: 5px;padding-left:15px;"><b>Bank Address:</b> <?php echo $this->merchant_info['bf_bankaddress'];?></div>
+
+<div style="margin-top:20px;">Memo (Up to 70 characters)</div>
+<div style="margin-top: 5px;"><textarea cols=50 rows=3 name="widthdraw_desc" id="widthdraw_desc"></textarea></div>
+
+<div style="margin-top:20px;"><input type=submit value="Withdraw"></div>
+</form>
+<?php } else {?>
+<div style="margin-top:20px;">Merchant enabled state is allowed to withdraw!</div>
+<?php } ?>

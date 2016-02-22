@@ -1,0 +1,92 @@
+<div style="margin:10px 0px;"><a href="<?php echo $this->url(array('controller'=>'Report','action'=>'index'), 'default', true);?>">Statistics Sum</a> | <a href="<?php echo $this->url(array('controller'=>'Report','action'=>'chartreport'), 'default', true);?>">Statistics Chart</a></div>
+
+<div style="margin:10px 0px;">Please Select Statistics Condition</div>
+
+<form action="" method="post"><div class="toolbar"><strong>Statistics Condition:</strong> Begin Date:
+ <input type="text" name="begin_date" id="begin_date" value="<?php echo $this->params['begin_date']; ?>" size="10" /> 
+End Date :
+<input type="text" name="end_date" id="end_date" value="<?php echo $this->params['end_date']; ?>" size="10" /> 
+Merchant Name Or ID:
+<input type="text" name="merchant" id="merchant" size="12" />
+<input type="submit" name="button" id="button" value="Report" /></div></form>
+
+<div style="margin:20px 0px 0px">Transaction activity summary report for settlement batches: <?php echo $this->params['begin_date']?$this->params['begin_date']:'initial'; ?> - <?php echo $this->params['end_date']?$this->params['end_date']:'today'; ?></div>
+
+<div class="tableout" style="margin-top:10px;">
+<table border="0" cellspacing="1" cellpadding="3" width="100%" class="table">
+<?php
+	foreach($this->Report['merchant_count'] as $merchantstatus){
+		$merchantcount+=$merchantstatus['merchant_count'];
+	}
+?>
+  <tr>
+    <td width="120" bgcolor="#FFFFFF">Merchant Number:</td>
+    <td bgcolor="#FFFFFF" colspan="3"><?php echo $merchantcount; ?></td>
+  </tr>
+<?php
+	foreach($this->Report['merchant_count'] as $merchantstatus){
+?>
+  <tr>
+    <td width="120" bgcolor="#FFFFFF"><?php echo $merchantstatus['mstatus_name']; ?> Merchant</td>
+    <td bgcolor="#FFFFFF" colspan="3"><?php echo $merchantstatus['merchant_count']; ?></td>
+  </tr>
+<?php
+	}
+?>
+  <tr>
+    <td bgcolor="#FFFFFF" width="120">Receved Amount</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_received']['trans_amount']; ?></td>
+    <td bgcolor="#FFFFFF" width="120">Receved Count</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_received']['receivedcount']; ?></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">Reserve Amount</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['reverse']['reverse_amount']; ?></td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">Locked Amount</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_locked']['trans_amount']; ?></td>
+    <td bgcolor="#FFFFFF">Locked Count</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_locked']['lockedcount']; ?></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">Refund Amount</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_refund']['trans_amount']; ?></td>
+    <td bgcolor="#FFFFFF">Refund Count</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_refund']['refundcount']; ?></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">Pending Amount</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_pending']['trans_amount']; ?></td>
+    <td bgcolor="#FFFFFF">Pending Count</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['merchant_pending']['pendingcount']; ?></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+    <td bgcolor="#FFFFFF">Rejected Count</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['rejected']; ?></td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">Net Amount</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['net']['trans_amount']; ?></td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">Net Fee</td>
+    <td bgcolor="#FFFFFF"><?php echo $this->Report['net']['trans_fee']; ?></td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+    <td bgcolor="#FFFFFF">&nbsp;</td>
+  </tr>
+</table>
+</div>
+
+<script type="text/javascript">
+ $(document).ready(function(){
+	$('#begin_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+	$('#end_date').datepick({closeAtTop:false,dateFormat:'yy-mm-dd',showBigPrevNext:true});
+});
+</script>

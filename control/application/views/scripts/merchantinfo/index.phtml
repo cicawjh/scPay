@@ -1,0 +1,30 @@
+<?php 
+	$request = Zend_Controller_Front::getInstance()->getRequest();
+	$action = $request->getActionName();
+?>
+<div style="margin-top: 5px;color:#CC0000;"><?php echo ($action=="Add")?'Add Merchant':'Edit Merchant'; ?></div>
+<div style="float:left;"><?php echo $this->info_form;?></div>
+<div style="float:left;"><?php echo $this->pass_form;?></div>
+<div style="float:left;"><?php echo $this->ip_purview;?></div>
+<div style="clear:both;"></div>
+<script language="JavaScript">
+	rnd.today=new Date();
+	rnd.seed=rnd.today.getTime();
+function rnd(){
+	rnd.seed = (rnd.seed*9301+49297) % 233280;
+	return rnd.seed/(233280.0);
+};
+
+function rand(number){
+	return Math.ceil(rnd()*number);
+};
+</script>
+<?php
+if(isset($this->ErrMsg['IpPurview'])){
+?>
+<script type="text/javascript" language="javascript">
+	alert("<?php echo str_replace(array('"',"\n","\r"),array('\"','\n',''),$this->ErrMsg['IpPurview']);?>");	
+</script>
+<?php
+}
+?>

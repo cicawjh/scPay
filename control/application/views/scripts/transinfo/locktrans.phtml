@@ -1,0 +1,14 @@
+<div class="caption">Lock Transaction</div>
+<div class="prompt">Click OK to continue this action and lock this transaction amount. Click Cancel to abort this action.</div>
+<form name="refundForm" id="refundForm" method="POST" action="<?php echo $this->url(array('controller'=>'Transinfo','action'=>'locktrans'), 'default', true); ?>">
+<dl><dt>Email notice:<input type="checkbox" name="sendEmail" checked="checked" value="1" /></dt><dd><textarea name="EmailNotice" cols="40" rows="6"><?php echo $this->transaction['comment']; ?></textarea></dd></dl>
+<div style="margin-top:5px;padding-left:20px;">
+	<input type="hidden" name="merchantID" id="merchantID" value="<?php echo $this->transaction['mid'];?>">
+	<input type="hidden" name="transID" id="transID" value="<?php echo $this->transaction['ptransid'];?>">
+	<input type="hidden" name="lock_amount" id="lock_amount" value="<?php echo $this->transaction['lock_amount'];?>">
+</div>
+<div style="margin-top:5px;padding-left:20px;"><input type="submit" name="submit" value="<?php echo $this->submitValue;?>"><input type="button" value="Cancel" onClick="location.href='<?php echo $this->url(array('controller'=>'Transinfo','action'=>'index','mid'=>$this->transaction['mid'],'id'=>$this->transaction['ptransid']), 'default', true);?>';"></div>
+</form>
+<?php if($this->errmsg){ ?>
+<div style="color:red;"><?php echo $this->errmsg; ?></div>
+<?php } ?>

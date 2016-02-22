@@ -1,0 +1,23 @@
+<div style="margin-top: 5px;color:#CC0000;">Withdraw Detail</div>
+<div style="margin-top:20px;">Transaction ID: <b><?php echo $this->transaction['ptransid'];?></b></div>
+<div style="margin-top:5px;">Transaction Type: <?php echo $this->transaction['transtype_name'];?></div>
+<div style="margin-top:5px;">Transaction Status: <?php echo $this->transaction['transtatus_name'];?></div>
+<?php if ($this->transaction['transtypeid'] == '2' && $this->transaction['transtatusid'] == '1') {?>
+	<div style="margin-top:5px;">
+		<form id="changeStatus" name="changeStatus" method="post" action="<?php echo $this->url(array('controller'=>'Withdrawinfo','action'=>'changestatus','mid'=>$this->transaction['mid'],'id'=>$this->transaction['ptransid']), 'default', true);?>">
+		<input type="hidden" id="newStatus" name="newStatus" value="1">
+		<input type="button" value="Apply this Withdraw" onClick="document.getElementById('newStatus').value=2;document.changeStatus.submit();">
+		<input type="button" value="Reject this Withdraw" onClick="document.getElementById('newStatus').value=3;document.changeStatus.submit();">
+		</form>
+	</div>
+<?php }?>
+<div style="background-color:#E3E3E3;margin-top:5px;height:20px;line-height:20px;padding:5px;font-size:12px;">Withdraw Information</div>
+<div style="margin-top:5px;padding-left:20px;">Withdraw Amount: <?php echo $this->symbol.(-$this->transaction['trans_net']);?></div>
+<div style="margin-top:5px;padding-left:20px;">Withdraw Fee: <?php echo $this->symbol.(-$this->transaction['trans_fee']);?></div>
+<div style="margin-top:5px;padding-left:20px;">Apply Withdraw: <b><?php echo $this->symbol.(-$this->transaction['trans_amount']);?></b></div>
+<div style="margin-top:5px;padding-left:20px;">Withdraw Date: <?php echo $this->symbol.$this->transaction['trans_date'];?></div>
+<div style="margin-top:5px;padding-left:20px;">Withdraw Desc: <?php echo $this->transaction['trans_desc'];?></div>
+
+<div style="margin-top:10px;padding-left:20px;margin-bottom:10px;">
+	<input type="button" value="Back to Withdraw Trans List" onClick="location.href='<?php echo $this->url(array('controller'=>'Withdrawtrans','action'=>'index'), 'default', true);?>';">
+</div>
